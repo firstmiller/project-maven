@@ -45,6 +45,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
+                    <source>18</source>
+                    <target>18</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -89,7 +91,7 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.5.1</version>
                 <configuration>
-                    <outputDirectory> ${project.build.directory}/dependency </outputDirectory>
+                    <outputDirectory>${project.build.directory}/dependency</outputDirectory>
                     <includeScope>compile</includeScope>
                 </configuration>
                 <executions>
@@ -101,6 +103,27 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Плагин maven-jar-plugin, который сделает jar файл, содержащий код игры и зависимости.
+            В этом плагине нужно сконфигурировать файл MANIFEST.MF, чтоб он содержал секции:
+            Class-Path, Main-Class и Rsrc-Main-Class -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Rsrc-Main-Class>com.javarush.games.racer.RacerGame</Rsrc-Main-Class>
+                            <Class-Path>./</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>
